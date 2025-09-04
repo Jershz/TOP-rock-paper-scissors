@@ -38,4 +38,22 @@ function playRound(humanChoice, computerChoice) {
     console.log(humanChoice + " " + computerChoice);        
 }
 
-playRound(getHumanChoice(), getComputerChoice());
+function playGame() {
+    for(let i = 0; i < 5; i++) {
+        playRound(getHumanChoice(), getComputerChoice());
+    }
+    if(humanScore == computerScore) {
+        console.log("Tie Game! The score was: " + humanScore + " to: " + computerScore);
+        return;
+    }
+    else if(humanScore > computerScore) {
+        console.log("You win! The score was: " + humanScore + " to: " + computerScore);
+        return;
+    }
+    else {
+        console.log("You lose! The score was: " + humanScore + " to: " + computerScore);
+        return;
+    }
+}
+
+playGame();
