@@ -7,24 +7,42 @@ const scoreboard = document.querySelector("#scoreboard");
 initializeGame();
 
 function initializeGame() {
+    humanScore = 0;
+    computerScore = 0;
     scoreboard.textContent = `Player: ${humanScore}     Computer: ${computerScore}`;
 }   
 
 choiceButtons.forEach(button => {
     button.addEventListener("click", () => {
-        while(gameOutput.firstChild) {
-            gameOutput.removeChild(gameOutput.firstChild);
-        }
+        clearOutput();
         playRound(button.id, getComputerChoice());        
     });
 });
 
-function updateGameOutput(str) {
-    
+function clearOutput() {
+    while (gameOutput.firstChild) {
+        gameOutput.removeChild(gameOutput.firstChild);
+    }
+}
+
+function updateGameOutput(str) {    
     const result = document.createElement("p");
     result.textContent = str;
     gameOutput.appendChild(result);
     scoreboard.textContent = `Player: ${humanScore}     Computer: ${computerScore}`;
+}
+
+function checkForWinner() {
+    if(humanScore >= 5) {
+        clearOutput();
+        updateGameOutput("You were the first to 5 points! You win!");
+        initializeGame();
+    }
+    if(computerScore >= 5) {
+        clearOutput();
+        updateGameOutput("The computer beat you to 5 points! You lose!");
+        initializeGame();
+    }
 }
 
 function getComputerChoice () {
@@ -44,11 +62,13 @@ function getHumanChoice () {
 function win() {
     updateGameOutput("You win! +1 point to you.");
     humanScore++;
+    checkForWinner();
 }
 
 function lose() {
     updateGameOutput("You lose! +1 point to computer")
     computerScore++;
+    checkForWinner();
 }
 
 function playRound(humanChoice, computerChoice) {
@@ -57,11 +77,11 @@ function playRound(humanChoice, computerChoice) {
         updateGameOutput(humanChoice + " " + computerChoice);
         return;  
     }
-
+    
+    updateGameOutput(humanChoice + " " + computerChoice);        
     let result = humanChoice == "rock" && computerChoice == "paper" ? lose() : 
         humanChoice == "paper" && computerChoice == "scissors" ? lose() :
         humanChoice == "scissors" && computerChoice == "rock" ? lose() : win();
-    updateGameOutput(humanChoice + " " + computerChoice);        
 }
 
 function playGame() {
